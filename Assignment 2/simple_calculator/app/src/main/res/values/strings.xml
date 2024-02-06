@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">SimpleCalculator</string>
+    <string name= "calculateButton">Calculate</string>
+    <string-array name="operations_array">
+        <item>Add ( + )</item>
+        <item>Subtract ( - )</item>
+        <item>Multiply ( * )</item>
+        <item>Divide ( / )</item>
+        <item>Remainder ( % )</item>
+    </string-array>
+</resources>
