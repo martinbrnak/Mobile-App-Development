@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.newsapi.databinding.FragmentNewsDetailBinding
+import java.util.UUID
 
 
 class NewsDetailFragment : Fragment() {
@@ -22,6 +23,7 @@ class NewsDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         news = News(
+            id = UUID.randomUUID(),
             title = "",
             source = "",
             description =  "",

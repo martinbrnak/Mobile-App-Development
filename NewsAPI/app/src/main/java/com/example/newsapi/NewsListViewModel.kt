@@ -11,20 +11,40 @@ import java.io.InputStreamReader
 import java.lang.Exception
 import java.net.HttpURLConnection
 import java.net.URL
+import java.util.UUID
 
 class NewsListViewModel : ViewModel() {
     val News_List = mutableListOf<News>()
 
     init{
-        getNews()
+        //getNews()
+        for(i in 0 until 30){
+            /*if (i%2 == 0){
+            val news = News(
+                id = UUID.randomUUID(),
+                title = "Title" + i,
+                content = "",
+                description = "description" + i,
+                url = "",
+                source = ""
+            )
+            }
+            else{
+                val news = News.getNews()
+            }
+            News_List += news*/
+            GlobalScope.launch(Dispatchers.IO){
+                getNews()
+            }
+        }
         }
 
     private fun getNews(){
         GlobalScope.launch(Dispatchers.IO) {
             val API_KEY = "cc8d12884b9242639a3559e6dcd24565"
-            val URL = "https://newsapi.org/v2/top-headlines?country=us&apiKey=$API_KEY&pageSize=30"
+            val URL = "https://newsapi.org/v2/everything?country=us&pageSize=30&apiKey=$API_KEY"
             try {
-                val url = URL(API_KEY)
+                val url = URL(URL)
                 val connection = url.openConnection() as HttpURLConnection
                 val responseCode = connection.responseCode
                 if (responseCode == HttpURLConnection.HTTP_OK) {
@@ -52,16 +72,21 @@ class NewsListViewModel : ViewModel() {
         withContext(Dispatchers.Default) {
             val jsonObject = JSONObject(response)
             val articlesArray = jsonObject.getJSONArray("articles")
-            for (i in 0 until articlesArray.length()) {
+
+            // Limiting the number of searches to 10
+            val searchLimit = minOf(articlesArray.length(), 10)
+
+            for (i in 0 until searchLimit) {
                 val articleObject = articlesArray.getJSONObject(i)
+                val id = UUID.randomUUID()
                 val title = articleObject.getString("title")
                 val source = articleObject.getJSONObject("source").getString("name")
                 val description = articleObject.getString("description")
                 val url = articleObject.getString("url")
                 val content = articleObject.getString("content")
 
-                val news = News(title, source, description, url, content)
-                News_List += news
+                val news = News(id, title, source, description, url, content)
+                News_List.add(news)
             }
         }
 

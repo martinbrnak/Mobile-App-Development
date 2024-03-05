@@ -8,8 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsapi.databinding.FragmentNewsListBinding
+import kotlinx.coroutines.launch
 
 private const val TAG = "NewsListFragment"
 
@@ -36,12 +41,30 @@ class NewsListFragment: Fragment() {
 
         binding.newsRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        val News_List = newsListViewModel.News_List
-        val adapter = NewsHolder.NewsListAdapter(News_List)
+        val news_List = newsListViewModel.News_List
+        val adapter = NewsHolder.NewsListAdapter(news_List)
         binding.newsRecyclerView.adapter = adapter
 
         return binding.root
     }
+/*
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED){
+                newsListViewModel.News_List.collect ( News_List ->
+                    binding.newsRecyclerView.adapter =
+                        NewsHolder.NewsListAdapter(News_List){
+                            findNavController().navigate(
+                                R.id.show_news_detail
+                            )
+                        }
+                )
+            }
+        }
+    }*/
+
 
     override fun onDestroyView() {
         super.onDestroyView()
