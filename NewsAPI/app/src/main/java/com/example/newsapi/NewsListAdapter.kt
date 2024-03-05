@@ -16,11 +16,7 @@ class NewsHolder(
             binding.newsDescription.text = news.description
 
             binding.root.setOnClickListener {
-                Toast.makeText(
-                    binding.root.context,
-                    "${news.title} clicked!",
-                    Toast.LENGTH_SHORT
-                ).show()
+                //onNewsClicked()
             }
         }
 
@@ -29,7 +25,8 @@ class NewsHolder(
 
 
 class NewsListAdapter(
-        private val News_List: List<News>
+        private val News_List: List<News>,
+        //private val onNewsClicked: () -> Unit
     ) : RecyclerView.Adapter<NewsHolder>() {
         override fun onCreateViewHolder(
             parent: ViewGroup,
@@ -43,7 +40,7 @@ class NewsListAdapter(
 
         override fun onBindViewHolder(holder: NewsHolder, position: Int) {
             val news = News_List[position]
-            holder.bind(news)
+            holder.bind(news)//, onNewsClicked)
 
         }
         override fun getItemCount() = News_List.size
